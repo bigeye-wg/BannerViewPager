@@ -62,9 +62,10 @@ class WelcomeActivity : BaseDataActivity() {
                     updateUI(position)
                 }
             })
-            adapter = WelcomeAdapter().apply {
+            setAdapter(WelcomeAdapter().apply {
                 mOnSubViewClickListener = CustomPageViewHolder.OnSubViewClickListener { _, position -> ToastUtils.show("Logo Clicked,position:$position") }
-            }
+
+            })
             setIndicatorSliderColor(ContextCompat.getColor(this@WelcomeActivity, R.color.white),
                     ContextCompat.getColor(this@WelcomeActivity, R.color.white_alpha_75))
         }.create(data)
@@ -90,7 +91,7 @@ class WelcomeActivity : BaseDataActivity() {
         animatorSet.playTogether(translationAnim, alphaAnimator)
         animatorSet.start()
 
-        if (position == mViewPager.data.size - 1 && btn_start?.visibility == View.GONE) {
+        if (position == mViewPager.data!!.size - 1 && btn_start?.visibility == View.GONE) {
             btn_start?.visibility = View.VISIBLE
             ObjectAnimator
                     .ofFloat(btn_start, "alpha", 0f, 1f)

@@ -13,12 +13,13 @@ import com.zhpan.bannerview.BaseBannerAdapter
  * </pre>
  */
 class PhotoAdapter : BaseBannerAdapter<Int, PhotoViewHolder>() {
-    override fun onBind(holder: PhotoViewHolder?, data: Int?, position: Int, pageSize: Int) {
-        holder?.bindData(data, position, pageSize)
+
+    override fun onBind(holder: PhotoViewHolder, data: Int, position: Int, pageSize: Int) {
+        holder.bindData(data, position, pageSize)
     }
 
-    override fun createViewHolder(itemView: View?, viewType: Int): PhotoViewHolder {
-        return PhotoViewHolder(itemView!!)
+    override fun createViewHolder(itemView: View, viewType: Int): PhotoViewHolder {
+        return PhotoViewHolder(itemView)
     }
 
     override fun getLayoutId(viewType: Int): Int {

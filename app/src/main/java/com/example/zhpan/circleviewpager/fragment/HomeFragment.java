@@ -93,7 +93,7 @@ public class HomeFragment extends BaseFragment {
         initRecyclerView(view);
         initRefreshLayout(view);
         initBanner();
-        fetchData(true);
+        fetchData(true, false);
     }
 
     public static HomeFragment getInstance() {
@@ -114,10 +114,10 @@ public class HomeFragment extends BaseFragment {
     private void initRefreshLayout(View view) {
         mSmartRefreshLayout = view.findViewById(R.id.refresh_layout);
         mSmartRefreshLayout.setRefreshHeader(new MaterialHeader(getMContext()));
-        mSmartRefreshLayout.setOnRefreshListener(refreshLayout -> fetchData(false));
+        mSmartRefreshLayout.setOnRefreshListener(refreshLayout -> fetchData(false, true));
     }
 
-    private void fetchData(boolean showLoading) {
+    private void fetchData(boolean showLoading, boolean isRefresh) {
         Observable.zip(getBannerObserver(), getArticleObserver(), (bannerData, articles) ->
                 new DataWrapper(articles.getDatas(), bannerData))
                 .compose(RxUtil.rxSchedulerHelper(this, showLoading))
@@ -132,6 +132,11 @@ public class HomeFragment extends BaseFragment {
                         bannerData.setTitle("这是一个自定义类型");
                         dataList.add(1, bannerData);
                         mViewPagerHorizontal.refreshData(dataList);
+//                        if (isRefresh) {
+//                            mViewPagerHorizontal.refreshData(dataList);
+//                        } else {
+//                            mViewPagerHorizontal.create(dataList);
+//                        }
                         List<ArticleWrapper.Article> articleList = response.getArticleList();
                         ArticleWrapper.Article article = new ArticleWrapper.Article();
                         article.setType(1001);
@@ -139,6 +144,7 @@ public class HomeFragment extends BaseFragment {
                         articleList.add(4, article);
                         articleAdapter.setData(articleList);
                         if (response.getDataBeanList().size() > 0) {
+                            mTvTitle.setText(response.getDataBeanList().get(0).getTitle());
                             mRlIndicator.setVisibility(View.VISIBLE);
                         }
                     }
@@ -163,6 +169,7 @@ public class HomeFragment extends BaseFragment {
     private void initBanner() {
         HomeAdapter homeAdapter = new HomeAdapter();
         mViewPagerHorizontal
+                .setAutoPlay(true)
                 .setScrollDuration(600)
                 .setIndicatorStyle(IndicatorStyle.CIRCLE)
                 .setIndicatorSlideMode(IndicatorSlideMode.WORM)

@@ -23,7 +23,7 @@ class WelcomeAdapter : BaseBannerAdapter<CustomBean, CustomPageViewHolder>() {
         holder.bindData(data, position, pageSize)
     }
 
-    override fun createViewHolder(itemView: View, viewType: Int): CustomPageViewHolder? {
+    override fun createViewHolder(itemView: View, viewType: Int): CustomPageViewHolder {
         val customPageViewHolder = CustomPageViewHolder(itemView)
         customPageViewHolder.setOnSubViewClickListener(mOnSubViewClickListener)
         return customPageViewHolder
