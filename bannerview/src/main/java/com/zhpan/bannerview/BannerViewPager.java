@@ -261,7 +261,9 @@ public class BannerViewPager<T, VH extends BaseViewHolder<T>> extends RelativeLa
     private void handlePosition() {
         if (mBannerPagerAdapter.getListSize() > 1 && isAutoPlay()) {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-            mHandler.postDelayed(mRunnable, getInterval());
+            if (isLooping) {
+                mHandler.postDelayed(mRunnable, getInterval());
+            }
         }
     }
 
@@ -430,8 +432,14 @@ public class BannerViewPager<T, VH extends BaseViewHolder<T>> extends RelativeLa
     public void startLoop() {
         if (!isLooping && isAutoPlay() && mBannerPagerAdapter != null &&
                 mBannerPagerAdapter.getListSize() > 1) {
-            mHandler.postDelayed(mRunnable, getInterval());
-            isLooping = true;
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mHandler.removeCallbacks(mRunnable);
+                    isLooping = true;
+                    mHandler.post(mRunnable);
+                }
+            }, getInterval());
         }
     }
 
@@ -439,10 +447,10 @@ public class BannerViewPager<T, VH extends BaseViewHolder<T>> extends RelativeLa
      * stoop loop
      */
     public void stopLoop() {
-//        if (isLooping) {
-            mHandler.removeCallbacks(mRunnable);
+        if (isLooping) {
             isLooping = false;
-//        }
+            mHandler.removeCallbacks(mRunnable);
+        }
     }
 
     public BannerViewPager<T, VH> setAdapter(BaseBannerAdapter<T, VH> adapter) {

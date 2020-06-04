@@ -1,6 +1,7 @@
 package com.example.zhpan.circleviewpager.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -181,6 +182,7 @@ public class HomeFragment extends BaseFragment {
                         super.onPageSelected(position);
                         BannerData bannerData = mViewPagerHorizontal.getData().get(position);
                         mTvTitle.setText(bannerData.getTitle());
+                        Log.d("TEST", "######" + position + "#######");
                     }
                 })
                 .setOnPageClickListener(this::onPageClicked).create();
