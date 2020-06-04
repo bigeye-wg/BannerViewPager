@@ -431,7 +431,7 @@ public class BannerViewPager<T, VH extends BaseViewHolder<T>> extends RelativeLa
      * Start loop
      */
     public void startLoop() {
-        if (!isLooping && isAutoPlay() && mBannerPagerAdapter != null &&
+        if (!isStopping && !isLooping && isAutoPlay() && mBannerPagerAdapter != null &&
                 mBannerPagerAdapter.getListSize() > 1) {
             isLooping = true;
             isStopping = true;
