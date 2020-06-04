@@ -53,6 +53,7 @@ public class BannerViewPager<T, VH extends BaseViewHolder<T>> extends RelativeLa
     private boolean isCustomIndicator;
 
     private boolean isLooping;
+    private boolean isStopping;
 
     private OnPageClickListener mOnPageClickListener;
 
@@ -261,7 +262,7 @@ public class BannerViewPager<T, VH extends BaseViewHolder<T>> extends RelativeLa
     private void handlePosition() {
         if (mBannerPagerAdapter.getListSize() > 1 && isAutoPlay()) {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-            if (isLooping) {
+            if (!isStopping) {
                 mHandler.postDelayed(mRunnable, getInterval());
             }
         }
@@ -432,11 +433,12 @@ public class BannerViewPager<T, VH extends BaseViewHolder<T>> extends RelativeLa
     public void startLoop() {
         if (!isLooping && isAutoPlay() && mBannerPagerAdapter != null &&
                 mBannerPagerAdapter.getListSize() > 1) {
+            isLooping = true;
+            isStopping = true;
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mHandler.removeCallbacks(mRunnable);
-                    isLooping = true;
+                    isStopping = false;
                     mHandler.post(mRunnable);
                 }
             }, getInterval());
