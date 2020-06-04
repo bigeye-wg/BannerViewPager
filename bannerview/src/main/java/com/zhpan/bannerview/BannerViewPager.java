@@ -439,10 +439,10 @@ public class BannerViewPager<T, VH extends BaseViewHolder<T>> extends RelativeLa
      * stoop loop
      */
     public void stopLoop() {
-        if (isLooping) {
+        //if (isLooping) {
             mHandler.removeCallbacks(mRunnable);
             isLooping = false;
-        }
+       // }
     }
 
     public BannerViewPager<T, VH> setAdapter(BaseBannerAdapter<T, VH> adapter) {
